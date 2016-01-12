@@ -26,7 +26,7 @@ X = ss.fit_transform(X)
 lda = LinearDiscriminantAnalysis()
 X_lda = lda.fit_transform(X, y)
 
-svm = SVC(C=0.3, gamma=0.05)
+svm = SVC(C=1, gamma=0.04)
 svm.fit(X_lda, y)
 y_pred_svm = svm.predict(X_lda)
 # kf_accuracy_svm.append(accuracy_score(y_test, y_pred_svm))

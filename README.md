@@ -30,8 +30,8 @@
 	- 0.730531378836
 * KNearestNeighbors: {n_neighbors=34}
 	- 0.722056802565
-* SVM: {'kernel': 'rbf', 'C': 0.3, 'gamma': 0.05}
-	- 0.744388456253
+* SVM: {'kernel': 'rbf', 'C': 1, 'gamma': 0.04}
+	- 0.747480531379
 
 ## Credits
 

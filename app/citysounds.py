@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template
 import cPickle as pickle
 import json
 import os
+import subprocess
 import uuid
 import requests
 import socket
@@ -28,9 +29,14 @@ def import_objects():
     if file and allowed_file(file.filename):
         #extract content 
         print file
-        f_name = str(uuid.uuid4()) + '.wav'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        tmp_file_path = app.config['UPLOAD_FOLDER'] + f_name
+        f_name_orig = str(uuid.uuid4()) + '.wav'
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name_orig))
+        tmp_file_path = app.config['UPLOAD_FOLDER'] + f_name_orig
+        f_name_convert = str(uuid.uuid4()) + '.wav'
+        converted_file_path = app.config['UPLOAD_FOLDER'] + f_name_convert
+        command = "sox " + tmp_file_path + " -b 16 " + converted_file_path
+        print command
+        subprocess.call(command, shell=True)
         X = single_file_featurization(tmp_file_path)
         y_pred = svm.predict(X)
         print y_pred

@@ -31,7 +31,7 @@ lolo = LeaveOneLabelOut(folds)
 #   {'C': [10, 5, 1, 0.5], 'kernel': ['linear']},
 #   {'C': [10, 5, 1, 0.5], 'gamma': [0.5, 0.1, 0.01, 0.005, 0.001], 'kernel': ['rbf']}]
 
-params_svm = [{'C': [1, 0.75, 0.5, 0.4, 0.3, 0.25], 'gamma': [0.1, 0.05, 0.04, 0.03, 0.025, 0.01]}]
+params_svm = [{'C': [1, 0.75, 0.5, 0.4, 0.3, 0.25], 'gamma': [0.1, 0.075, 0.05, 0.04, 0.03, 0.025, 0.01]}]
 
 svm = SVC()
 gs = GridSearchCV(svm, params_svm, cv=lolo, verbose=3, scoring='accuracy')

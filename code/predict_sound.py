@@ -72,7 +72,7 @@ def single_file_featurization(filepath):
     X = lda.transform(X)
     return X
 
-filepath = LOCAL_REPO_DIR + 'test/dog.wav'
+filepath = LOCAL_REPO_DIR + 'test/drill.wav'
 X = single_file_featurization(filepath)
 
 y_pred = svm.predict(X)
