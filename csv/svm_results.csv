@@ -1,0 +1,12 @@
+True,air_conditioner,car_horn,children_playing,dog_bark,drilling,engine_idling,gun_shot,jackhammer,siren,street_music,All
+air_conditioner,674,4,23,30,35,81,3,64,5,81,1000
+car_horn,9,354,8,6,16,13,0,11,1,11,429
+children_playing,25,5,765,38,23,24,1,9,15,95,1000
+dog_bark,27,12,68,799,16,17,4,3,24,30,1000
+drilling,45,13,8,16,686,49,3,150,8,22,1000
+engine_idling,170,6,17,8,22,613,0,106,34,24,1000
+gun_shot,0,2,0,16,6,0,347,2,0,1,374
+jackhammer,68,0,0,1,72,41,0,807,1,10,1000
+siren,26,2,51,15,10,36,0,11,763,15,929
+street_music,51,9,107,17,19,29,0,27,29,712,1000
+All,1095,407,1047,946,905,903,358,1190,880,1001,8732
