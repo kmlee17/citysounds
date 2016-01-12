@@ -16,17 +16,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	# high = tab.find({'fraud_prob': {'$gt': 0.5}}).count()
-	# medium = tab.find({'fraud_prob': {'$lte': 0.5, '$gt': 0.0}}).count()
-	# low = tab.find({'fraud_prob': 0.0}).count()
-	# img = graph(high, medium, low)
-	# return render_template('index.html', high_var = high, med_var = medium, low_var = low, img_1 = img)
-	return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/import', methods= ['POST']) 
 def import_objects():        
@@ -40,7 +34,7 @@ def import_objects():
         X = single_file_featurization(tmp_file_path)
         y_pred = svm.predict(X)
         print y_pred
-        return redirect(url_for('result'), pred = y_pred)
+        return render_template('result.html', pred = y_pred)
     else:
         abort(make_response("File extension not acceptable", 400))
 

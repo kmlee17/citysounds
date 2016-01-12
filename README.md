@@ -39,11 +39,9 @@ Original dataset created by Justin Salamon, Christopher Jacoby, and Juan Pablo B
 
 Music and Audio Research Lab (MARL), New York University, USA Center for Urban Science and Progress (CUSP), New York University, USA
 
-http://serv.cusp.nyu.edu/projects/urbansounddataset
-
-http://marl.smusic.nyu.edu/
-
-http://cusp.nyu.edu/
+* http://serv.cusp.nyu.edu/projects/urbansounddataset
+* http://marl.smusic.nyu.edu/
+* http://cusp.nyu.edu/
 
 Web app template created by and is maintained by **David Miller**, Managing Parter at [Iron Summit Media Strategies](http://www.ironsummitmedia.com/).
 

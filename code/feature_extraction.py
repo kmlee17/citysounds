@@ -10,10 +10,17 @@ from sklearn.manifold import MDS
 import scipy.io.wavfile as wav
 
 # variables for the mfcc extraction
-window = 1024                # fft window
-hop = window / 2             # step size
+
+# fft window size: so if sample rate is 44.1 kHz,
+# a window of 1024 is 0.23 ms
+window = 1024
+# hop size: how far to jump ahead to the next window
+hop = window / 2
+# number of mel frequency triangular filters
 n_filters = 40
-n_coeffs = 25                # mfcc coefficients
+# number of mfcc coefficients to return
+n_coeffs = 25
+# sample rate of the audio before transformation into the frequency domain
 sample_rate = 44100
 
 df_path = LOCAL_REPO_DIR + 'metadata/citysound.csv'
