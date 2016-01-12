@@ -1,15 +1,15 @@
 ## CitySounds
 ### Audio Classes (8732 samples)
-* air_conditioner
-* car_horn
-* children_playing
-* dog_bark
-* drilling
-* enginge_idling
-* gun_shot
-* jackhammer
-* siren
-* street_music
+* Air Conditioner
+* Car Horn
+* Children Playing
+* Dog Bark
+* Drilling
+* Enginge Idling
+* Gun Shot
+* Jackhammer
+* Siren
+* Street Music
 
 ### Packages Used
 * Pandas

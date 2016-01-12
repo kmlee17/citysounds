@@ -97,10 +97,19 @@ print 'knn accuracy: ', kf_accuracy_knn
 print 'svm accuracy: ', kf_accuracy_svm
 print 'svm accuracy overall: ', sum(kf_accuracy_svm) / float(len(kf_accuracy_svm))
 print 'final crosstab:'
-conf_mat = sum(class_reports)
-print conf_mat
-per_conf_mat = conf_mat / conf_mat['All']
-per_conf_mat.drop('All', axis=1, inplace=True)
-per_conf_mat.drop('All', axis=0, inplace=True)
 
+# combine classification reports from each kfold for an overall report
+confusion_mat = sum(class_reports)
+
+# save results of classification report to csv
+# conf_mat.to_csv('csv/svm_results.csv')
+
+print conf_mat
+
+# convert confusion matrix to percentages rather than absolute values
+per_confusion_mat = conf_mat / conf_mat['All']
+per_confusion_mat.drop('All', axis=1, inplace=True)
+per_confusion_mat.drop('All', axis=0, inplace=True)
+
+# heatmap of confusion matrix
 sns.heatmap(per_conf_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False)
