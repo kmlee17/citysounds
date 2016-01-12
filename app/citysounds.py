@@ -39,14 +39,18 @@ def import_objects():
         subprocess.call(command, shell=True)
         X = single_file_featurization(tmp_file_path)
         y_pred = svm.predict(X)
-        print y_pred
-        return render_template('result.html', pred = y_pred)
+        pred_class, img = get_class_and_image(y_pred)
+        return render_template('result.html', pred = pred_class, class_image = img)
     else:
         abort(make_response("File extension not acceptable", 400))
 
-@app.route('/result', methods= ['GET'])
-def result():
-    return render_template('result.html')
+def get_class_and_image(y_pred):
+    if y_pred == 'dog_bark':
+        img = 'static/img/dog.jpg'
+        return 'Dog Bark', img
+    elif y_pred == 'car_horn':
+        img = 'static/img/car.jpg'
+        return 'Car Horn', img
 
 
 if __name__ == '__main__':
