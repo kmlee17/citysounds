@@ -13,6 +13,8 @@ from sklearn.feature_selection import SelectFromModel, SelectKBest, chi2, f_clas
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.cross_validation import LeaveOneLabelOut
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 data_path = LOCAL_REPO_DIR + 'csv/citysounds.csv'
 data = pd.read_csv(data_path)

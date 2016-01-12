@@ -7,13 +7,13 @@ import aubio as ab
 from scipy.stats import skew, kurtosis
 from sklearn.preprocessing import normalize, StandardScaler
 
-with open('svm.pkl', 'rb') as f1:
+with open('model/svm.pkl', 'rb') as f1:
     svm = cPickle.load(f1)
 
-with open('lda.pkl', 'rb') as f2:
+with open('model/lda.pkl', 'rb') as f2:
     lda = cPickle.load(f2)
 
-with open('ss.pkl', 'rb') as f3:
+with open('model/ss.pkl', 'rb') as f3:
     ss = cPickle.load(f3)
 
 # filepath = LOCAL_REPO_DIR + 'test/drill.wav'
@@ -72,7 +72,7 @@ def single_file_featurization(filepath):
     X = lda.transform(X)
     return X
 
-filepath = LOCAL_REPO_DIR + 'test/drill.wav'
+filepath = LOCAL_REPO_DIR + 'test/dog.wav'
 X = single_file_featurization(filepath)
 
 y_pred = svm.predict(X)
