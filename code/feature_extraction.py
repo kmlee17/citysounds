@@ -26,8 +26,8 @@ sample_rate = 44100
 # testing first fold only
 # df_f1 = df[df['fold'] == 1]
 
-X = []
-y = []
+# X = []
+# y = []
 
 # aubio
 # for i, row in df.iterrows():
@@ -80,7 +80,9 @@ def extract_features(csv_path):
 
     '''
     
-    df = pd.read_csv(df_path)
+    df = pd.read_csv(csv_path)
+    X = []
+    y = []
 
     # iterate through every row in the dataframe, each row represents an audio sample
     for i, row in df.iterrows():
@@ -137,7 +139,7 @@ def extract_features(csv_path):
     # y.append(row['class'])
     X = np.asarray(X)
     features = pd.DataFrame(X)
-    features['class'] = y
+    features['class'] = df['class']
     features['fold'] = df['fold']
     features.to_csv('csv/citysounds_test.csv')
 

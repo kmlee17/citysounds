@@ -1,14 +1,12 @@
 from setup import LOCAL_REPO_DIR
 import numpy as np
 import pandas as pd
-import cPickle
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.cross_validation import KFold, cross_val_score
-from sklearn.grid_search import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import normalize, StandardScaler
+from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import SelectFromModel, SelectKBest, chi2, f_classif
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
