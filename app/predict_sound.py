@@ -3,7 +3,6 @@ import numpy as np
 import pandas as pd
 import cPickle
 import librosa as lr
-# import aubio as ab
 from scipy.stats import skew, kurtosis
 from sklearn.preprocessing import normalize, StandardScaler
 
