@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import scipy.io.wavfile as wav
 
-def convert_16bits(wavfile, newfile):
+def convert_to_16bits(wavfile, newfile):
    pass
 
 n_folds = 10

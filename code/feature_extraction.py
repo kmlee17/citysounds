@@ -75,8 +75,8 @@ def extract_features(csv_path):
     - 'fold': numerical folder name of where the file is stored (ie '1' -> in folder 'fold1')
 
     OUTPUT:
-    - Saves feature csv with 'class' and 'fold' data included in location specified.  Each
-      row is a feature vector (275 features) representing an audio sample
+    - Saves features in a csv with 'class' and 'fold' data included in location specified.  Each
+      row is a feature vector (275 features) representing a single audio sample
 
     '''
     
