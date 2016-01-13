@@ -37,7 +37,7 @@ def import_objects():
         command = "sox " + tmp_file_path + " -b 16 " + converted_file_path
         print command
         subprocess.call(command, shell=True)
-        X = single_file_featurization(tmp_file_path)
+        X = single_file_featurization(converted_file_path)
         y_pred = svm.predict(X)
         pred_class, img = get_class_and_image(y_pred)
         return render_template('result.html', pred = pred_class, class_image = img)
@@ -45,12 +45,36 @@ def import_objects():
         abort(make_response("File extension not acceptable", 400))
 
 def get_class_and_image(y_pred):
-    if y_pred == 'dog_bark':
-        img = 'static/img/dog.jpg'
-        return 'Dog Bark', img
+    if y_pred == 'air_conditioner':
+        img = 'static/img/ac.jpg'
+        return 'Air Conditioner', img
     elif y_pred == 'car_horn':
         img = 'static/img/car.jpg'
-        return 'Car Horn', img
+        return 'Car Horn', img 
+    elif y_pred == 'children_playing':
+        img = 'static/img/children.jpg'
+        return 'Children Playing', img
+    elif y_pred == 'dog_bark':
+        img = 'static/img/dog.jpg'
+        return 'Dog Bark', img 
+    elif y_pred == 'drilling':
+        img = 'static/img/drill.jpg'
+        return 'Drilling', img 
+    elif y_pred == 'engine_idling':
+        img = 'static/img/idling.jpg'
+        return 'Engine Idling', img
+    elif y_pred == 'gun_shot':
+        img = 'static/img/gun.jpg'
+        return 'Gun Shot', img
+    elif y_pred == 'jackhammer':
+        img = 'static/img/jackhammer.jpg'
+        return 'Jackhammer', img
+    elif y_pred == 'siren':
+        img = 'static/img/siren.jpg'
+        return 'Police Siren', img
+    elif y_pred == 'street_music':
+        img = 'static/img/street_music.jpg'
+        return 'Street Music', img 
 
 
 if __name__ == '__main__':

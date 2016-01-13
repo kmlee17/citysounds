@@ -147,7 +147,7 @@ a:focus {
     padding: 100px 0;
     text-align: center;
     color: #fff;
-    background: url(../img/intro-bg.jpg) no-repeat bottom center scroll;
+    background: url(../img/sf.jpg) no-repeat bottom center scroll;
     background-color: #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -198,7 +198,6 @@ a:focus {
     filter: alpha(opacity=0);
     opacity: 0;
     outline: none;
-    background-color: blue;
     background: white;
     cursor: inherit;
     display: block;
