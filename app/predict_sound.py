@@ -72,7 +72,7 @@ def single_file_featurization(filepath):
     return X
 
 if __name__ == '__main__':
-    filepath = LOCAL_REPO_DIR + 'test/drill.wav'
+    filepath = LOCAL_REPO_DIR + 'test/test.wav'
     X = single_file_featurization(filepath)
     y_pred = svm.predict(X)
     print y_pred
