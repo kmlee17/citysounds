@@ -1,16 +1,13 @@
 from flask import Flask, request, redirect, url_for, render_template
-import cPickle as pickle
-import json
 import os
 import subprocess
 import uuid
-import requests
-import socket
 import cPickle
 from werkzeug import secure_filename
 from predict_sound import single_file_featurization
 
-UPLOAD_FOLDER = 'static/tmp/'
+ROOT_FOLDER = '/Users/kevinlee/citysounds/app/'
+UPLOAD_FOLDER = ROOT_FOLDER + 'static/tmp/'
 ALLOWED_EXTENSIONS = set(['wav'])
 
 app = Flask(__name__)
@@ -27,8 +24,6 @@ def index():
 def import_objects():        
     file = request.files['file']
     if file and allowed_file(file.filename):
-        #extract content 
-        print file
         f_name_orig = str(uuid.uuid4()) + '.wav'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name_orig))
         tmp_file_path = app.config['UPLOAD_FOLDER'] + f_name_orig
@@ -78,10 +73,6 @@ def get_class_and_image(y_pred):
 
 
 if __name__ == '__main__':
-    with open('static/model/svm.pkl', 'rb') as f1:
+    with open(ROOT_FOLDER + 'static/model/svm.pkl', 'rb') as f1:
         svm = cPickle.load(f1)
-    with open('static/model/lda.pkl', 'rb') as f2:
-        lda = cPickle.load(f2)
-    with open('static/model/ss.pkl', 'rb') as f3:
-        ss = cPickle.load(f3)
-    app.run(host='0.0.0.0', port=7777, debug=True)
+    app.run(host='0.0.0.0', debug=True)
