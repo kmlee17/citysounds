@@ -76,11 +76,11 @@
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">CitySounds</h1>
-                        <p>Upload a short audio wav file of the following types of sounds: Air Conditioner, Car Horn, Children Playing, Dog Bark, Drilling, Engine Idling, Gun Shot, Jackhammer, Siren, Street Music. CitySounds will predict what it is!</p>
+                        <p>Upload a short audio wav file (< 10 MB) of the following types of sounds: Air Conditioner, Car Horn, Children Playing, Dog Bark, Drilling, Engine Idling, Gun Shot, Jackhammer, Siren, Street Music. CitySounds will predict what it is!</p>
                         <div>
                         <form action="/import" method="post" enctype="multipart/form-data">
                         <label class="control-label">Select File</label>
-                        <input id="input-1" data-show-preview="false" type="file" class="file" name="file">
+                        <input id="file-input" data-show-preview="false" maxFileSize="" type="file" class="file" name="file">
                         </form>
  
             </div>
@@ -157,7 +157,13 @@
 
     <script src="static/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
     <script src="static/js/fileinput.min.js"></script>
-
+    <script>
+        $('#file-input').fileinput({
+            maxFileSize: 10000,
+            allowedFileTypes: ['audio'],
+            allowedFileExtensions: ['wav']
+        });
+    </script>
 </body>
 
 </html>
