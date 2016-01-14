@@ -3,41 +3,54 @@ import numpy as np
 import pandas as pd
 import cPickle
 from sklearn.svm import SVC
-from sklearn.preprocessing import normalize, StandardScaler
+from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score, classification_report
 
+def train_model(csv_path):
+    '''
+    INPUT: 
+    audio features csv with 'class' labels included
 
-data_path = LOCAL_REPO_DIR + 'csv/citysounds.csv'
-data = pd.read_csv(data_path)
+    OUTPUT:
+    three pickled models stored in the models dir
+    - StandardScaler (sklearn)
+    - LinearDiscriminantAnalysis (sklearn)
+    - SVC (sklearn)
 
-# test = data[(data['class'] != 'car_horn') & (data['class'] != 'jackhammer') & (data['class'] != 'siren')]
-# test = data[(data['class'] == 'dog_bark') | (data['class'] == 'children_playing')]
-# data = data[(data['class'] != 'engine_idling')]
-X = data.drop(['class', 'fold', 'Unnamed: 0'], axis=1).values
-y = data['class'].values
+    Takes an audio feature csv (created from 'feature_extraction.py') and returns pickled models to use
+    '''
+    csv = LOCAL_REPO_DIR + csv_path
+    df = pd.read_csv(csv_path)
 
-# X = normalize(X)
+    # extracts X, y for training model from dataframe
+    X = df.drop(['class', 'fold', 'Unnamed: 0'], axis=1).values
+    y = df['class'].values
 
-# feature matrix has many different scales, need to standardize
-ss = StandardScaler()
-X = ss.fit_transform(X)
+    # feature matrix has many different scales, need to standardize
+    ss = StandardScaler()
+    X = ss.fit_transform(X)
 
-lda = LinearDiscriminantAnalysis()
-X_lda = lda.fit_transform(X, y)
+    lda = LinearDiscriminantAnalysis()
+    X_lda = lda.fit_transform(X, y)
 
-svm = SVC(C=1, gamma=0.04)
-svm.fit(X_lda, y)
-y_pred_svm = svm.predict(X_lda)
-# kf_accuracy_svm.append(accuracy_score(y_test, y_pred_svm))
+    # trains model using best performing model/hyperparameters using kfold grid search
+    svm = SVC(C=1, gamma=0.04)
+    svm.fit(X_lda, y)
+    
+    # accuracy check to make sure the model is performing
+    y_pred_svm = svm.predict(X_lda)
+    print 'model accuracy: ', accuracy_score(y, y_pred_svm)
 
-print 'model accuracy: ', accuracy_score(y, y_pred_svm)
+    # cPickles models for later use
+    with open(LOCAL_REPO_DIR + 'models/svm.pkl', 'wb') as f:
+        cPickle.dump(svm, f)
 
-with open('svm.pkl', 'wb') as f:
-    cPickle.dump(svm, f)
+    with open(LOCAL_REPO_DIR + 'lda.pkl', 'wb') as f:
+        cPickle.dump(lda, f)
 
-with open('lda.pkl', 'wb') as f:
-    cPickle.dump(lda, f)
+    with open(LOCAL_REPO_DIR + 'ss.pkl', 'wb') as f:
+        cPickle.dump(ss, f)
 
-with open('ss.pkl', 'wb') as f:
-    cPickle.dump(ss, f)
+if __name__ == '__main__':
+    train_model('csv/citysounds.csv')
