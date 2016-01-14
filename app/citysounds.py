@@ -33,6 +33,8 @@ def import_objects():
         print command
         subprocess.call(command, shell=True)
         X = single_file_featurization(converted_file_path)
+        with open(ROOT_FOLDER + 'static/model/svm.pkl', 'rb') as f1:
+            svm = cPickle.load(f1)
         y_pred = svm.predict(X)
         pred_class, img = get_class_and_image(y_pred)
         return render_template('result.html', pred = pred_class, class_image = img)
