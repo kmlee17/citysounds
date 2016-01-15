@@ -14,100 +14,103 @@ from sklearn.cross_validation import LeaveOneLabelOut
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data_path = LOCAL_REPO_DIR + 'csv/citysounds.csv'
-data = pd.read_csv(data_path)
 
-# test = data[(data['class'] != 'car_horn') & (data['class'] != 'jackhammer') & (data['class'] != 'siren')]
-# test = data[(data['class'] == 'dog_bark') | (data['class'] == 'children_playing')]
-# data = data[(data['class'] != 'engine_idling')]
-X = data.drop(['class', 'fold', 'Unnamed: 0'], axis=1).values
-y = data['class'].values
+def run_kfold(csv_path, model='svm'):
+    '''
+    INPUT: 
+    audio features csv with 'class' and 'fold' data included
+    model to use, choose from 'svm', 'knn', 'randomforest'
 
-# X = normalize(X)
+    OUTPUT:
+    - print statements on accuracy of each fold, overall accuracy
+    - overall classification report on test data
+    - seaborn heatmap of confusion matrix
+    
+    Uses the 'label' column to build the kfold using sklearn's 'LeaveOneLabelOut' function
+    '''
 
-# feature matrix has many different scales, need to standardize
-ss = StandardScaler()
-X = ss.fit_transform(X)
+    csv = LOCAL_REPO_DIR + csv_path
+    df = pd.read_csv(csv_path)
 
-X = LinearDiscriminantAnalysis().fit_transform(X, y)
+    # extracts X, y for training model from dataframe
+    X = df.drop(['class', 'fold', 'Unnamed: 0'], axis=1).values
+    y = df['class'].values
 
-# X = PCA(n_components=0.999, whiten=True).fit_transform(X)
+    # feature matrix has many different scales, need to standardize
+    X = StandardScaler().fit_transform(X)
 
-# mds = MDS()
-# points = mds.fit_transform(X)
+    X = LinearDiscriminantAnalysis().fit_transform(X, y)
 
-# df = pd.DataFrame(dict(x=points[:,0], y=points[:,1], label=y))
-# groups = df.groupby('label')
-# fig, ax = plt.subplots()
-# ax.margins(0.05) # Optional, just adds 5% padding to the autoscaling
-# for name, group in groups:
-#     ax.plot(group.x, group.y, marker='o', linestyle='', ms=12, label=name)
-# ax.legend()
+    # X = PCA(n_components=0.999, whiten=True).fit_transform(X)
 
-# plt.show()
+    # runs MDS to reduce dimensionality to 2D for an approximation of clusters
+    # mds = MDS()
+    # points = mds.fit_transform(X)
 
-kf_accuracy_knn = []
-kf_accuracy_svm = []
-kf_accuracy_rf = []
-kf_accuracy_rf1 = []
+    # df = pd.DataFrame(dict(x=points[:,0], y=points[:,1], label=y))
+    # groups = df.groupby('label')
+    # fig, ax = plt.subplots()
+    # ax.margins(0.05) # Optional, just adds 5% padding to the autoscaling
+    # for name, group in groups:
+    # ax.plot(group.x, group.y, marker='o', linestyle='', ms=12, label=name)
+    # ax.legend()
 
-folds = data['fold']
-lolo = LeaveOneLabelOut(folds)
-class_reports = []
-kf = KFold(len(X), n_folds=10)
-for train_index, test_index in lolo:
-    # print("TRAIN:", train_index, "TEST:", test_index)
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = y[train_index], y[test_index]
-    knn = KNeighborsClassifier(n_neighbors=21)
-    knn.fit(X_train, y_train)
-    y_pred = knn.predict(X_test)
-    kf_accuracy_knn.append(accuracy_score(y_test, y_pred))
+    # plt.show()
 
-    # rf = RandomForestClassifier(n_estimators=500, criterion='entropy')
-    # rf.fit(X_train, y_train)
-    # y_pred_rf = rf.predict(X_test)
-    # kf_accuracy_rf.append(accuracy_score(y_test, y_pred_rf))
+    kf_accuracy = []
 
-    # model = SelectFromModel(rf, prefit=True)
-    # X_train_new = model.transform(X_train)
-    # X_test_new = model.transform(X_test)
+    folds = df['fold']
+    lolo = LeaveOneLabelOut(folds)
+    class_reports = []
+    kf = KFold(len(X), n_folds=10)
+    for train_index, test_index in lolo:
+        # print("TRAIN:", train_index, "TEST:", test_index)
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
 
-    # rf1 = RandomForestClassifier()
-    # rf1.fit(X_train_new, y_train)
-    # y_pred_rf1 = rf1.predict(X_test_new)
-    # kf_accuracy_rf1.append(accuracy_score(y_test, y_pred_rf1))
+        if model == 'knn':
+            knn = KNeighborsClassifier(n_neighbors=21)
+            knn.fit(X_train, y_train)
+            y_pred = knn.predict(X_test)
+            kf_accuracy.append(accuracy_score(y_test, y_pred))
 
-    svm = SVC(C=0.3, gamma=0.05)
-    svm.fit(X_train, y_train)
-    y_pred_svm = svm.predict(X_test)
-    kf_accuracy_svm.append(accuracy_score(y_test, y_pred_svm))
+        elif model == 'randomforest':
+            rf = RandomForestClassifier(n_estimators=500, criterion='entropy')
+            rf.fit(X_train, y_train)
+            y_pred = rf.predict(X_test)
+            kf_accuracy.append(accuracy_score(y_test, y_pred))
 
-    print classification_report(y_test, y_pred_svm)
-    class_reports.append(pd.crosstab(pd.Series(y_test), pd.Series(y_pred_svm), rownames=['True'], colnames=['Predicted'], margins=True))
+        else:
+            svm = SVC(C=1, gamma=0.04)
+            svm.fit(X_train, y_train)
+            y_pred = svm.predict(X_test)
+            kf_accuracy.append(accuracy_score(y_test, y_pred))
 
-print 'number of samples: ', len(X)
-print 'knn accuracy: ', kf_accuracy_knn
-# print 'knn accuracy after: ', kf_accuracy_knn1
-# print 'rf accuracy: ', kf_accuracy_rf
-# print 'rf accuracy overall: ', sum(kf_accuracy_rf) / float(len(kf_accuracy_rf))
-# print 'rf accuracy after: ', kf_accuracy_rf1
-print 'svm accuracy: ', kf_accuracy_svm
-print 'svm accuracy overall: ', sum(kf_accuracy_svm) / float(len(kf_accuracy_svm))
-print 'final crosstab:'
+        print classification_report(y_test, y_pred)
+    class_reports.append(pd.crosstab(pd.Series(y_test), pd.Series(y_pred), rownames=['True'], colnames=['Predicted'], margins=True))
 
-# combine classification reports from each kfold for an overall report
-confusion_mat = sum(class_reports)
+    print 'number of samples: ', len(X)
+    print 'kfold accuracy: ', kf_accuracy
+    print 'kfold accuracy overall: ', sum(kf_accuracy) / float(len(kf_accuracy))
 
-# save results of classification report to csv
-# conf_mat.to_csv('csv/svm_results.csv')
+    # combine classification reports from each kfold for an overall report
+    confusion_mat = sum(class_reports)
+    print 'final crosstab:'
+    print confusion_mat
 
-print conf_mat
+    # save results of classification report to csv
+    # conf_mat.to_csv('csv/kfold_results.csv')
 
-# convert confusion matrix to percentages rather than absolute values
-per_confusion_mat = conf_mat / conf_mat['All']
-per_confusion_mat.drop('All', axis=1, inplace=True)
-per_confusion_mat.drop('All', axis=0, inplace=True)
+    # convert confusion matrix to percentages rather than absolute values
+    per_confusion_mat = confusion_mat / confusion_mat['All']
+    per_confusion_mat.drop('All', axis=1, inplace=True)
+    per_confusion_mat.drop('All', axis=0, inplace=True)
 
-# heatmap of confusion matrix
-sns.heatmap(per_conf_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False)
+    # heatmap of confusion matrix
+    # note, there is a bug with matplotlib/seaborn where the annotation doesn't show up other than bottom left
+    # all annotation shows up when you savefig to a image file
+    sns.heatmap(per_confusion_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False)
+    plt.show()
+
+if __name__ == '__main__':
+    run_kfold('csv/citysounds.csv')
