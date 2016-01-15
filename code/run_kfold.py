@@ -11,6 +11,8 @@ from sklearn.feature_selection import SelectFromModel, SelectKBest, chi2, f_clas
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.cross_validation import LeaveOneLabelOut
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -110,7 +112,8 @@ def run_kfold(csv_path, model='svm'):
     # note, there is a bug with matplotlib/seaborn where the annotation doesn't show up other than bottom left
     # all annotation shows up when you savefig to a image file
     sns.heatmap(per_confusion_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False)
-    plt.show()
+    plt.savefig('test.png', dpi=1000)
+    # plt.show()
 
 if __name__ == '__main__':
     run_kfold('csv/citysounds.csv')
