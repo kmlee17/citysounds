@@ -20,8 +20,11 @@ n_coeffs = 25
 # sample rate of the audio before transformation into the frequency domain
 sample_rate = 44100
 
+def get_features(row):
+    wavfile = LOCAL_REPO_DIR + 'audio/fold' + str(row['fold']) + '/' + row['slice_file_name']
+    return single_file_featurization(wavfile)
 
-def single_file_featurization(row):
+def single_file_featurization(wavfile):
     '''
     INPUT:
     row of dataframe with 'audio_slice_name' as the filename of the audio sample
@@ -33,8 +36,6 @@ def single_file_featurization(row):
     of mfcc coefficients
     '''
 
-    wavfile = LOCAL_REPO_DIR + 'audio/fold' + str(row['fold']) + '/' + row['slice_file_name']
-    
     # print statements to update the progress of the processing
     print wavfile
 
@@ -99,7 +100,7 @@ def extract_features(csv_path):
     # X = []
     y = []
 
-    X = df.apply(lambda x: pd.Series(single_file_featurization(x)), axis=1)
+    X = df.apply(lambda x: pd.Series(get_features(x)), axis=1)
 
     X = np.asarray(X)
     features = pd.DataFrame(X)
