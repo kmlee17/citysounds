@@ -20,51 +20,6 @@ n_coeffs = 25
 # sample rate of the audio before transformation into the frequency domain
 sample_rate = 44100
 
-# df_path = LOCAL_REPO_DIR + 'metadata/citysound.csv'
-# df = pd.read_csv(df_path)
-
-# testing first fold only
-# df_f1 = df[df['fold'] == 1]
-
-# X = []
-# y = []
-
-# aubio
-# for i, row in df.iterrows():
-#     wavfile = LOCAL_REPO_DIR + 'mono/fold' + str(row['fold']) + '/' + row['slice_file_name']
-#     print wavfile
-#     print i
-#     wavmat, Fs = lr.load(wavfile, sr=44100)
-#     s = ab.source(wavfile, Fs, hop)
-#     sample_rate = s.samplerate
-#     phase = ab.pvoc(window, hop)
-#     mag = ab.mfcc(window, n_filters, n_coeffs, sample_rate)
-#     mfcc = np.zeros([n_coeffs,])
-#     frames_read = 0
-#     while True:
-#         samples, read = s()
-#         spec = phase(samples)
-#         mfcc_out = mag(spec)
-#         mfcc = np.vstack((mfcc, mfcc_out))
-#         frames_read += read
-#         if read < hop: break
-#     # mfcc = lr.feature.mfcc(wav_mat, sr, n_mfcc=13)
-#     mfcc_delta = lr.feature.delta(mfcc.T)
-#     mfcc_delta = mfcc_delta.T
-#     mfcc_delta2 = lr.feature.delta(mfcc.T, order=2)
-#     mfcc_delta2 = mfcc_delta2.T
-#     # mfcc = mfcc.T
-#     total_mfcc = np.column_stack((mfcc, mfcc_delta, mfcc_delta2))
-#     avg_mfcc = np.mean(total_mfcc, axis=0)
-#     var_mfcc = np.var(total_mfcc, axis=0)
-#     max_mfcc = np.max(mfcc, axis=0)
-#     min_mfcc = np.min(mfcc, axis=0)
-#     med_mfcc = np.median(mfcc, axis=0)
-#     skew_mfcc = skew(mfcc, axis=0)
-#     kurt_mfcc = skew(mfcc, axis=0)
-#     features = np.concatenate((avg_mfcc, var_mfcc, max_mfcc, min_mfcc, med_mfcc, skew_mfcc, kurt_mfcc))
-#     X.append(features)
-#     y.append(row['class'])
 
 def extract_features(csv_path):
     '''
@@ -137,22 +92,17 @@ def extract_features(csv_path):
         features = np.concatenate((avg_mfcc, var_mfcc, max_mfcc, min_mfcc, med_mfcc, skew_mfcc, kurt_mfcc))
         X.append(features)
 
-    # extract the class of the sample
-    # y.append(row['class'])
     X = np.asarray(X)
     features = pd.DataFrame(X)
+
+    # extract the class and fold of the sample
     features['class'] = df['class']
     features['fold'] = df['fold']
+
+    # output to a csv file for later usage
     features.to_csv('csv/citysounds_test.csv')
 
-# X = np.asarray(X)
-# y = np.asarray(y)
 
-# features = pd.DataFrame(X)
-# features['class'] = y
-# features['fold'] = df['fold']
-
-# features.to_csv('csv/urbansound_stereo.csv')
 
 if __name__ == '__main__':
     csv_path = LOCAL_REPO_DIR + 'metadata/citysounds_meta.csv'
