@@ -1,7 +1,7 @@
 ## CitySounds
 CitySounds is an environental sound classifier.  Humans are excellent at identifying sounds very quickly, how well can a machine do this same task?
 
-[CitySounds](https://www.citysoundsproject.org)
+[CitySounds](http://www.citysoundsproject.org)
 
 ### Audio Classes (8732 samples)
 * Air Conditioner
