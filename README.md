@@ -14,10 +14,10 @@ CitySounds is an environental sound classifier.  Humans are excellent at identif
 * Street Music
 
 ### Data Pipeline
-![pipeline](pipeline.jpg)
+![pipeline](img/pipeline.jpg)
 
 ### Results
-![confusion_matrix](confusion_matrix.png)
+![confusion_matrix](img/confusion_matrix.png)
 
 ### Packages Used
 * Pandas
