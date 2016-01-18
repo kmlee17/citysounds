@@ -7,7 +7,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.cross_validation import KFold, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.feature_selection import SelectFromModel, SelectKBest, chi2, f_classif
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.cross_validation import LeaveOneLabelOut
@@ -28,7 +27,11 @@ def run_kfold(csv_path, model='svm'):
     - overall classification report on test data
     - seaborn heatmap of confusion matrix
     
-    Uses the 'label' column to build the kfold using sklearn's 'LeaveOneLabelOut' function
+    Runs a kfold cross validation using the 'label' column to build the kfold 
+    using sklearn's 'LeaveOneLabelOut' function.
+
+    Outputs a heatmap of the percentage confusion matrix of the results and saves as
+    a .png file to the 'img' directory.
     '''
 
     csv = LOCAL_REPO_DIR + csv_path
@@ -42,8 +45,6 @@ def run_kfold(csv_path, model='svm'):
     X = StandardScaler().fit_transform(X)
 
     X = LinearDiscriminantAnalysis().fit_transform(X, y)
-
-    # X = PCA(n_components=0.999, whiten=True).fit_transform(X)
 
     # runs MDS to reduce dimensionality to 2D for an approximation of clusters
     # mds = MDS()
@@ -89,6 +90,7 @@ def run_kfold(csv_path, model='svm'):
             kf_accuracy.append(accuracy_score(y_test, y_pred))
 
         print classification_report(y_test, y_pred)
+    
     class_reports.append(pd.crosstab(pd.Series(y_test), pd.Series(y_pred), rownames=['True'], colnames=['Predicted'], margins=True))
 
     print 'number of samples: ', len(X)

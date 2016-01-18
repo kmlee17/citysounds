@@ -6,8 +6,11 @@ import cPickle
 from werkzeug import secure_filename
 from predict_sound import single_file_featurization
 
+# declare root app and tmp folders here
 ROOT_FOLDER = '/Users/kevinlee/citysounds/app/'
 UPLOAD_FOLDER = ROOT_FOLDER + 'static/tmp/'
+
+# allowed file extensions for upload
 ALLOWED_EXTENSIONS = set(['wav'])
 
 app = Flask(__name__)
@@ -24,17 +27,27 @@ def index():
 def import_objects():        
     file = request.files['file']
     if file and allowed_file(file.filename):
+
+        # saves uploaded .wav in tmp folder for processing
         f_name_orig = str(uuid.uuid4()) + '.wav'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name_orig))
+
+        # uses SoX command line to convert files into 16bit
         tmp_file_path = app.config['UPLOAD_FOLDER'] + f_name_orig
         f_name_convert = str(uuid.uuid4()) + '.wav'
         converted_file_path = app.config['UPLOAD_FOLDER'] + f_name_convert
         command = "sox " + tmp_file_path + " -b 16 " + converted_file_path
         print command
         subprocess.call(command, shell=True)
+
+        # passes raw audio into function for featurization
         X = single_file_featurization(converted_file_path)
+
+        # opens pickled svm for classification
         with open(ROOT_FOLDER + 'static/model/svm.pkl', 'rb') as f1:
             svm = cPickle.load(f1)
+
+        # returns prediction and gets respective image to display
         y_pred = svm.predict(X)
         pred_class, img = get_class_and_image(y_pred)
         return render_template('result.html', pred = pred_class, class_image = img)

@@ -78,6 +78,8 @@ def extract_features(csv_path):
     - Saves features in a csv with 'class' and 'fold' data included in location specified.  Each
       row is a feature vector (275 features) representing a single audio sample
 
+    Reads in a csv and iterates through each row, extracting the features from each audio
+    sample.  The resulting features are saved in a .csv in the 'csv' folder for future use
     '''
     
     df = pd.read_csv(csv_path)
