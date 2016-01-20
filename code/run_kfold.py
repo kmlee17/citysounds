@@ -84,15 +84,14 @@ def run_kfold(csv_path, model='svm'):
             kf_accuracy.append(accuracy_score(y_test, y_pred))
 
         else:
-            svm = SVC(C=1, gamma=0.04)
+            # svm = SVC(C=1, gamma=0.04)
+            svm = SVC(C=0.3, gamma=0.05)
             svm.fit(X_train, y_train)
             y_pred = svm.predict(X_test)
             kf_accuracy.append(accuracy_score(y_test, y_pred))
 
         print classification_report(y_test, y_pred)
-    
-    class_reports.append(pd.crosstab(pd.Series(y_test), pd.Series(y_pred), rownames=['True'], colnames=['Predicted'], margins=True))
-
+        class_reports.append(pd.crosstab(pd.Series(y_test), pd.Series(y_pred), rownames=['True'], colnames=['Predicted'], margins=True))
     print 'number of samples: ', len(X)
     print 'kfold accuracy: ', kf_accuracy
     print 'kfold accuracy overall: ', sum(kf_accuracy) / float(len(kf_accuracy))
@@ -113,8 +112,13 @@ def run_kfold(csv_path, model='svm'):
     # heatmap of confusion matrix
     # note, there is a bug with matplotlib/seaborn where the annotation doesn't show up other than bottom left
     # all annotation shows up when you savefig to a image file
-    sns.heatmap(per_confusion_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False)
-    plt.savefig('test.png', dpi=1000)
+    class_labels = ['AC', 'Car_Horn', 'Children', 'Dog_Bark', 'Drill', 'Engine_Idle', 'Gunshot', 'Jackhammer', 'Siren', 'Street_Music']
+    sns.heatmap(per_confusion_mat, annot=True, fmt=".2f", linewidths=.5, cbar=False, yticklabels=class_labels, xticklabels=class_labels)
+    plt.tick_params(labelsize=16)
+    plt.xlabel('', fontsize=0)
+    plt.ylabel('', fontsize=0)
+    plt.tight_layout()
+    plt.savefig('img/confus_mat.png', dpi=800)
     # plt.show()
 
 if __name__ == '__main__':

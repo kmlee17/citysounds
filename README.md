@@ -1,5 +1,5 @@
 ## CitySounds
-CitySounds is an environental sound classifier.  Humans are excellent at identifying sounds very quickly, how well can a machine do this same task?
+CitySounds is an environmental sound classifier that uses data science, machine learning, and audio signal processing techniques.  Humans are very good at identifying sounds quickly, how well can a machine do this same task?
 
 [CitySounds Webapp](http://www.citysoundsproject.org)
 
@@ -16,7 +16,7 @@ CitySounds is an environental sound classifier.  Humans are excellent at identif
 * Street Music
 
 ### Data Pipeline
-![pipeline](img/pipeline.jpg)
+![pipeline](img/pipeline.png)
 
 ### Results
 ![confusion_matrix](img/confusion_matrix.png)

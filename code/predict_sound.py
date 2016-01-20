@@ -22,7 +22,7 @@ def open_pickle(pickle_path):
 
 if __name__ == '__main__':
     # location of test file
-    filepath = LOCAL_REPO_DIR + 'test/drill.wav'
+    filepath = LOCAL_REPO_DIR + 'test/105415-2-0-1.wav'
 
     # open pickled models for processing new data
     svm = open_pickle('model/svm.pkl')

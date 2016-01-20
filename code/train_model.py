@@ -7,6 +7,21 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score, classification_report
 
+def save_pickle(model):
+    '''
+    INPUT:
+    path of pickled model
+
+    OUTPUT:
+    unpickled model
+
+    Pass in the location of the pickled model and the function will unpickle it and return
+    the opened model
+    '''
+
+    with open(LOCAL_REPO_DIR + 'models/' + str(model) + '.pkl', 'wb') as f:
+        return cPickle.dump(model, f)
+
 def train_model(csv_path):
     '''
     INPUT: 
@@ -43,13 +58,13 @@ def train_model(csv_path):
     print 'model accuracy: ', accuracy_score(y, y_pred_svm)
 
     # cPickles models for later use
-    with open(LOCAL_REPO_DIR + 'models/svm.pkl', 'wb') as f:
+    with open(LOCAL_REPO_DIR + 'model/svm.pkl', 'wb') as f:
         cPickle.dump(svm, f)
 
-    with open(LOCAL_REPO_DIR + 'lda.pkl', 'wb') as f:
+    with open(LOCAL_REPO_DIR + 'model/lda.pkl', 'wb') as f:
         cPickle.dump(lda, f)
 
-    with open(LOCAL_REPO_DIR + 'ss.pkl', 'wb') as f:
+    with open(LOCAL_REPO_DIR + 'model/ss.pkl', 'wb') as f:
         cPickle.dump(ss, f)
 
 if __name__ == '__main__':
